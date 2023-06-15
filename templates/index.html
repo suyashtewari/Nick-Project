@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial scale=1.0">
+    <title>Nicholas Recreational Center Data Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        
+        @font-face {
+            font-family: 'Radikal-Regular';
+            src: url('/static/RadikalTrial-Regular-BF642254c157251.otf') format("truetype");
+        }
+
+        .crest-header {
+            background-color: white;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .crest-header a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .crest-header img {
+            margin-right: 10px;
+            padding: 1rem 0;
+            width: 6rem;
+            padding-left: 5rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-text {
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Radikal-Regular',"Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 36px;
+            color: #333;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        /* .logo-img {
+            margin: auto;
+            flex-basis: auto;
+            padding: 1rem 0;
+            width: 6rem;
+            justify-content: space-between;
+            align-items: center;
+        } */
+    
+        /* h1 {
+            font-family: 'Radikal-Regular',"Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 36px;
+            color: #333;
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: center;
+        } */
+
+        .global-bar {
+            background-color: #262628;
+            color: white;
+            border-bottom-color: transparent;
+            height: 37px;
+            padding: 0.1rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.825rem;
+            font-weight: 620;
+            font-family: 'Radikal-Regular',"Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+
+        .global-name-link {
+            font-family: 'Radikal-Regular',"Helvetica Neue",Helvetica,Arial,sans-serif;
+            margin-top: 2px;
+            line-height: 2rem;
+            color: currentColor;
+            text-decoration: none;
+            padding-left: 1rem;
+        }
+
+        .dedication {
+            font-family: 'Radikal-Regular',"Helvetica Neue",Helvetica,Arial,sans-serif;
+            margin-top: 2px;
+            line-height: 2rem;
+            color: currentColor;
+            padding-right: 1rem;
+            font-size: 0.825rem;
+            font-weight: 620;
+        }
+    
+        body {
+            font-family: 'Radikal-Regular',"Helvetica Neue",Helvetica,Arial,sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+    
+        .dropdown {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dropdown select {
+            padding: 12px;
+            font-size: 16px;
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+    
+        .dropdown select:focus {
+            border-color: #a20c32;
+            box-shadow: 0 0 5px rgba(162, 12, 50, 0.5);
+            outline: none;
+        }
+    
+        .button-group {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .button-group button {
+            padding: 10px;
+            background-color: #f5f5f5;
+            border: none;
+            margin-right: -1px;
+            font-family: 'Radikal-Regular',"Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 20px;
+            color: #0479a8;
+            transition: background-color 0.1s, color 0.1s;
+            /* padding: 12px 24px;
+            margin: 0 10px;
+            font-size: 16px;
+            background-color: #a20c32;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s; */
+        }
+
+        /* .button-group button:last-child {
+            margin-right: 0;
+            } */
+    
+        .button-group button:hover {
+            color: white;
+            background-color: #c5050c;
+        }
+
+        .button-group button:active,
+        .button-group button:focus {
+            background-color: #c5050c;
+            color: #fff;
+            outline: none;
+            }
+    
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 500px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+    
+        #no-data {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #999;
+        }
+    
+        #chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .footer {
+            background-color: #282728;
+            border-top: 5px solid #c5050c;
+            color: #adadad;
+            margin-top: auto;
+            text-align: center;
+            }
+
+    </style>
+    
+    
+</head>
+
+<body>
+
+    <div class="global-bar">
+        <a class="global-name-link" href="https://www.wisc.edu">
+            UNIVERSITY of WISCONSIN-MADISON
+        </a>
+
+        <a class="dedication">
+            Suyash Tewari | Nikhil Kagalwala
+        </a>
+    </div>
+    <div class="crest-header">
+        <a href="https://recwell.wisc.edu/">
+            <img src="https://recwell.wisc.edu/wp-content/themes/uw-theme-child-recwell/assets/images/RecWell_SpotRGB.png" alt="RecWell Home">
+        </a>
+        <h1 class="header-text">Nicholas Recreational Center Data Visualization</h1>
+
+        <!-- <h1>
+            Nicholas Recreational Center Data Visualization
+        </h1> -->
+    </div>
+    
+    <div class="dropdown">
+        <select id="roomOption" onchange="updateChart('{{ day }}')">
+            <option>Nick Power House</option>
+            <option>Nick Level 1 Fitness</option>
+            <option>Nick Level 2 Fitness</option>
+            <option>Nick Level 3 Fitness</option>
+            <option>Nick Courts 1 & 2</option>
+            <option>Nick Courts 3-6</option>
+            <option>Nick Courts 7 & 8</option>
+            <option>Nick Track</option>
+            <option>Nick Raquetball Court 1</option>
+            <option>Nick Raquetball Court 2</option>
+            <option>Revolution (Spin LL)</option>
+            <option>Momentum (level 2)</option>
+            <option>Balance (level 3)</option>
+            <option>Spark (level 3)</option>
+            <option>Elevation (level 4)</option>
+            <option>Soderholm Family Aquatic Center</option>
+        </select>
+    </div>
+
+    <div class="button-group">
+        <button onclick="updateChart('Monday')">Monday</button>
+        <button onclick="updateChart('Tuesday')">Tuesday</button>
+        <button onclick="updateChart('Wednesday')">Wednesday</button>
+        <button onclick="updateChart('Thursday')">Thursday</button>
+        <button onclick="updateChart('Friday')">Friday</button>
+        <button onclick="updateChart('Saturday')">Saturday</button>
+        <button onclick="updateChart('Sunday')">Sunday</button>
+    </div>
+    
+    <div>
+        <a id="no-data"></a>
+    </div>
+    <div class="chart-container">
+        <canvas id="chart"></canvas>
+    </div>
+
+    <footer class="footer">
+        © 2023 Suyash Tewari and Nikhil Kagalwala
+      </footer>
+      
+
+      <script>
+        // UW-Madison themed colors
+        var uwMadisonRed = 'rgba(184, 40, 38, 0.8)';
+        var uwMadisonDarkRed = 'rgba(184, 40, 38, 1)';
+        var uwMadisonGray = 'rgba(111, 120, 125, 0.2)';
+        var uwMadisonDarkGray = 'rgba(111, 120, 125, 0.6)';
+      
+        // Define the chart variable outside the updateChart function
+        var barChart;
+      
+        function updateChart(day) {
+          var roomOption = document.getElementById("roomOption").value || "{{ default_room }}";
+          var selectedDay = day || "{{ default_day }}";
+          document.getElementById("no-data").innerHTML = "";
+      
+          fetch("/room_data", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              room: roomOption,
+              day: selectedDay,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.labels.length === 0 && data.values.length === 0) {
+                document.getElementById("no-data").innerHTML = "No Data";
+                barChart.data.labels = [];
+                barChart.data.datasets[0].data = [];
+                barChart.update();
+              } else {
+                document.getElementById("no-data").innerHTML = "";
+                barChart.data.labels = data.labels;
+                barChart.data.datasets[0].data = data.values;
+                barChart.update();
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              document.getElementById("no-data").innerHTML = "NO Data";
+              barChart.data.labels = [];
+              barChart.data.datasets[0].data = [];
+              barChart.update();
+            });
+        }
+      
+        // Wait for the DOM to load before initializing the chart
+        document.addEventListener("DOMContentLoaded", function () {
+          var ctx = document.getElementById("chart").getContext("2d");
+          barChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: [],
+              datasets: [
+                {
+                  data: [],
+                  backgroundColor: uwMadisonRed,
+                  borderColor: uwMadisonDarkRed,
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: {
+                    color: uwMadisonGray,
+                  },
+                  ticks: {
+                    color: uwMadisonDarkGray,
+                  },
+                },
+                x: {
+                  grid: {
+                    display: false,
+                  },
+                  ticks: {
+                    color: uwMadisonDarkGray,
+                  },
+                },
+              },
+              plugins: {
+                legend: {
+                    display: false,
+                  labels: {
+                    color: uwMadisonDarkGray,
+                  },
+                },
+                tooltip: {
+                  backgroundColor: uwMadisonRed,
+                  borderColor: uwMadisonDarkRed,
+                  borderWidth: 1,
+                  titleColor: "#fff",
+                  bodyColor: "#fff",
+                  callbacks: {
+                    labelColor: function (context) {
+                      return {
+                        borderColor: uwMadisonDarkRed,
+                        backgroundColor: uwMadisonRed,
+                      };
+                    },
+                  },
+                },
+              },
+            },
+          });
+      
+          // Call the initial updateChart function
+          updateChart();
+        });
+      </script>
+      
+</body>
+</html>
